@@ -49,12 +49,16 @@ const linePatterns = [
 function generateCalcProblem() {
   const variables = getRandom([['a', 'b'], ['a', 'b', 'c'], ['a', 'b', 'c', 'd']]);
   const lines = variables.map(
-    (v, i) => getResult(getRandom(linePatterns)(v, variables[i - 2], variables[i - 1]))
+    (v, i) => getRandom(linePatterns)(v, variables[i - 2], variables[i - 1])
   );
   const varsToPrint = evalPy(lines, variables.slice(-2));
-  const value = `${varsToPrint[0]} ${getRandomOp()} ${varsToPrint[1]}`;
-  const correctAnswer = eval(value);
-  
+  const operatorToPrint = getRandomOp();
+  const correctAnswer = eval(`${varsToPrint[0]}${operatorToPrint}${varsToPrint[1]}`);
+  return [
+    lines.concat([`print(${variables.slice(-2, -1)} ${operatorToPrint} ${variables.slice(-1)})`]), 
+    correctAnswer,
+  ];
+}
 
 function evalPy(lines, varsToPrint) {
   const globals = {};
