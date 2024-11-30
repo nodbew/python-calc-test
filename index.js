@@ -39,28 +39,26 @@ function generateCode() {
   answer = correctAns;
 }
 
+// Problems
+const linePatterns = [
+  (v) => `${v} = ${Math.random() * 10}`,
+  (v1, v2) => `${v1} = ${v2 ?? Math.random() * 10}`,
+  (v1, v2, v3) => `${v1} = ${v2 ?? Math.random() * 10} ${getRandomOp()} ${v3 ?? Math.random() * 10}`,
+];
+
 function generateCalcProblem() {
   const variables = getRandom([['a'], ['a', 'b', 'c'], ['a', 'b', 'c', 'd']]);
-  const locals = Object.fromEntries(
-    variables.map(
-      (v, i) => {
-        // The first variable should have a number
-        if (i === 0) {
-          return [v, Math.random() * 10];
-        }
-        
-        // Decide between 'a=2' and 'a=b*c'
-        if (getRandom([true, false]) && i < 1) {
-          const [operandOne, operandTwo] = [getRandom(variables[:i]), getRandom(variables[:i]);
-        } else {
-          const [operandOne, operandTwo] = [Math.random() * 10, Math.random() * 10];
-        }
+  const numLines = Math.random() * 4;
+  const lines = 
 
-        // Decide between 
-      }
-    )
-  );
 
+function getRandomNum(num) {
+  return Math.floor(Math.random() * num);
+}
 function getRandom(options) {
-  return options[Math.floor(Math.random() * array.length)];
+  return options[getRandomNum(options.length)];
+}
+
+function getRandomOp() {
+  return getRandom(['+', '-', '*', '/']);
 }
