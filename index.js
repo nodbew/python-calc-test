@@ -41,17 +41,33 @@ function generateCode() {
 
 // Problems
 const linePatterns = [
-  (v) => `${v} = ${Math.random() * 10}`,
-  (v1, v2) => `${v1} = ${v2 ?? Math.random() * 10}`,
-  (v1, v2, v3) => `${v1} = ${v2 ?? Math.random() * 10} ${getRandomOp()} ${v3 ?? Math.random() * 10}`,
+  (v) => `${v} = ${getRandomNum(10)}`,
+  (v1, v2) => `${v1} = ${v2 ?? getRandomNum(10)}`,
+  (v1, v2, v3) => `${v1} = ${v2 ?? getRandomNum(10)} ${getRandomOp()} ${v3 ?? getRandomNum(10)}`,
 ];
 
 function generateCalcProblem() {
-  const variables = getRandom([['a'], ['a', 'b', 'c'], ['a', 'b', 'c', 'd']]);
-  const numLines = Math.random() * 4;
-  const lines = 
+  const variables = getRandom([['a', 'b'], ['a', 'b', 'c'], ['a', 'b', 'c', 'd']]);
+  const lines = variables.map(
+    (v, i) => getResult(getRandom(linePatterns)(v, variables[i - 2], variables[i - 1]))
+  );
+  const varsToPrint = evalPy(lines, variables.slice(-2));
+  const value = `${varsToPrint[0]} ${getRandomOp()} ${varsToPrint[1]}`;
+  const correctAnswer = eval(value);
+  
 
-
+function evalPy(lines, varsToPrint) {
+  const globals = {};
+  lines.forEach(line => {
+    let [v, val] = line.split('=').map(s => s.trim());
+    Object.keys(globals).forEach( ident => {
+      val.replace(ident, globals[ident]);
+    });
+    globals[v] = eval(val);
+  });
+  return varsToPrint.map(v => globals[v]);
+}
+  
 function getRandomNum(num) {
   return Math.floor(Math.random() * num);
 }
