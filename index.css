@@ -1,3 +1,11 @@
+input[type="number"].correct{
+  color: green;
+}
+
+input[type="number"].wrong {
+  color: red;
+}
+
 .button {
   display: none;
 }
