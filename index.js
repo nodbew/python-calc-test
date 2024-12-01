@@ -1,31 +1,39 @@
 const codeArea = document.getElementById('code');
 const answerArea = document.getElementById('answer');
+const correct = document.getElementById('correct');
 const submitButton = document.getElementById('submit');
 const proceedButton = document.getElementById('proceed');
 
-// Global state 
-let answer;
+// Problems
+const linePatterns = [
+  (v) => `${v} = ${getRandomNum(9) + 1}`,
+  (v1, v2) => `${v1} = ${v2 ?? getRandomNum(9) + 1}`,
+  (v1, v2, v3) => `${v1} = ${v2 ?? getRandomNum(9) + 1} ${getRandomOp()} ${v3 ?? getRandomNum(9) + 1}`,
+];
 
 // Initialize
 generateCode();
 answerArea.focus();
 
-submitButton.addEventListener(() => {
-  submitButton.classList = ['button'];
-  proceedButton.classList = ['button', 'active'];
+submitButton.addEventListener('click', () => {
+  submitButton.classList.remove('active');
+  proceedButton.classList.add('active');
   answerArea.disabled = true;
+  correct.textContent = `答えは：${codeArea.dataset.answer}`;
   
   const userAnswer = answerArea.value;
-  const result = checkAnswer(userAnswer, answer);
-  answerArea.classList = [ result ? 'correct' : 'wrong', ];
+  const result = checkAnswer(userAnswer, codeArea.dataset.answer);
+  answerArea.classList.add( result ? 'correct' : 'wrong' );
 });
-proceedButton.addEventListener(() => {
-  submitButton.classList = ['button', 'active'];
-  proceedButton.classList = ['button'];
+proceedButton.addEventListener('click', () => {
+  submitButton.classList.add('active');
+  proceedButton.classList.remove('active');
   answerArea.disabled = false;
   answerArea.focus();
   answerArea.value = '';
-  answerArea.classList = [];
+  answerArea.classList.remove('correct');
+  answerArea.classList.remove('wrong');
+  correct.textContent = '';
   generateCode();
 });
 
@@ -36,15 +44,8 @@ function checkAnswer(userAnswer, correctAnswer) {
 function generateCode() {
   const [code, correctAns] = generateCalcProblem();
   codeArea.innerHTML = code;
-  answer = correctAns;
+  codeArea.dataset.answer = correctAns;
 }
-
-// Problems
-const linePatterns = [
-  (v) => `${v} = ${getRandomNum(10)}`,
-  (v1, v2) => `${v1} = ${v2 ?? getRandomNum(10)}`,
-  (v1, v2, v3) => `${v1} = ${v2 ?? getRandomNum(10)} ${getRandomOp()} ${v3 ?? getRandomNum(10)}`,
-];
 
 function generateCalcProblem() {
   const variables = getRandom([['a', 'b'], ['a', 'b', 'c'], ['a', 'b', 'c', 'd']]);
@@ -61,15 +62,11 @@ function generateCalcProblem() {
 }
 
 function evalPy(lines, varsToPrint) {
-  const globals = {};
   lines.forEach(line => {
     let [v, val] = line.split('=').map(s => s.trim());
-    Object.keys(globals).forEach( ident => {
-      val.replace(ident, globals[ident]);
-    });
-    globals[v] = eval(val);
+    window[v] = eval(val);
   });
-  return varsToPrint.map(v => globals[v]);
+  return varsToPrint.map(v => window[v]);
 }
   
 function getRandomNum(num) {
