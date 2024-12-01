@@ -1,3 +1,11 @@
+.centered-flexbox {
+  display: flex; 
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;
+  margin-bottom: 5%;
+}
+
 input[type="number"].correct{
   color: green;
 }
