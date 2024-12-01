@@ -8,19 +8,20 @@
     <link rel="stylesheet" href="index.css" />
   </head>
   <body style="display: flex; justify-content: center; align-items: center;" >
-    <div style="width: 75vw; height: 80vh; display: flex; flex-flow: column; justify-content: center; align-items: center;" >
-      <div style="width: 100%; height: 60%;" >
-        <pre>
-          <code id="code" >Lorem Ipsum sit amet</code>
+    <div class='centered-flexbox' style="width: 75vw; height: 80vh;">
+      <div style="width: 100%; height: 60%;">
+        <pre class='centered-flexbox' style="width: 100%; height: 100%; background-color: #f0f0f0;">
+          <code id="code"></code>
         </pre>
       </div>
-      <div style="width: 100%; height: 40%;" >
+      <div class='centered-flexbox' style="width: 100%; height: 40%;">
         <label style="height: 70%">
           解答
           <input type="number" id="answer" />
         </label>
-        <button id="submit" class="button active" style="height: 15%">チェック</button>
-        <button id="proceed" class="button" style="height: 15%">次へ</button>
+        <p id="correct" style='height: 10%;'></p>
+        <button id="submit" class="button active" style="height: 10%">チェック</button>
+        <button id="proceed" class="button" style="height: 10%">次へ</button>
       </div>
     </div>
   </body>
