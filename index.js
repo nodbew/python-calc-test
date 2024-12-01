@@ -55,7 +55,7 @@ function generateCalcProblem() {
   const operatorToPrint = getRandomOp();
   const correctAnswer = eval(`${varsToPrint[0]}${operatorToPrint}${varsToPrint[1]}`);
   return [
-    lines.concat([`print(${variables.slice(-2, -1)} ${operatorToPrint} ${variables.slice(-1)})`]), 
+    lines.concat([`print(${variables.slice(-2, -1)} ${operatorToPrint} ${variables.slice(-1)})`]).join('\n'), 
     correctAnswer,
   ];
 }
