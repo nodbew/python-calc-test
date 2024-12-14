@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "テスト対策ーーテンプレート",
-  description: "テスト対策のための問題を自動生成するアプリのプロトタイプ",
+  title: "Python計算問題",
+  description: "自動生成されたPythonの計算問題を解く",
 };
 
 export default function RootLayout({
